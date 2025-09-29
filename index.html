@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Lettered App</title>
+        <meta name="description" content="Part digital yard, part legacy archive, part private network." />
+        <link rel="icon" href="letteredlogo32x32.png" sizes="32x32" />
+
+       <style>
+
+        /* Container and Layout */
+        .container{max-width:1200px;margin:0 auto;padding:16px}
+        @media (max-width:768px){.container{padding:20px}}
+        @media (max-width:480px){.container{padding:16px}}
+        @media (max-width:375px){.container{padding:12px}}
+        @media (max-width:320px){.container{padding:10px}}
+        
+        /* Header */
+        header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:18px 0}
+        @media (max-width:768px){header{padding:12px 0}}
+        @media (max-width:480px){header{padding:8px 0;gap:12px}}
+        @media (max-width:375px){header{padding:6px 0;gap:8px}}
+        
+        .brand{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+        @media (max-width:480px){.brand{width:100%;justify-content:flex-start;gap:8px}}
+        @media (max-width:375px){.brand{gap:6px}}
+        
+        .logo-img{max-width:48px;height:auto;border-radius:8px}
+        @media (max-width:480px){.logo-img{max-width:40px}}
+        @media (max-width:375px){.logo-img{max-width:32px}}
+        @media (max-width:320px){.logo-img{max-width:28px}}
+        
+        nav{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+        @media (max-width:768px){nav{gap:8px}}
+        @media (max-width:480px){nav{width:100%;justify-content:space-between;gap:6px}}
+        @media (max-width:375px){nav{gap:4px}}
+        @media (max-width:320px){nav{flex-direction:column;align-items:stretch;gap:6px}}
+
+        /* Desktop navigation */
+        .desktop-nav {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        }
+        
+        /* Mobile navigation */
+        .mobile-nav {
+        display: none;
+        position: relative;
+        }
+        
+        @media (max-width: 768px) {
+        .desktop-nav {
+            display: none;
+        }
+        
+        .mobile-nav {
+            display: block;
+        }
+        }
+
+        /* Hide/Show Elements */
+        @media (max-width:768px){
+        .hide-mobile{display:none}
+        .show-mobile{display:block}
+        
+        /* Mobile navigation */
+        .mobile-nav {
+            position: relative;
+        }
+        
+        .mobile-menu-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 200px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px var(--shadow);
+            padding: 16px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+            z-index: 100;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .mobile-nav.mobile-open .mobile-menu-dropdown {
+            display: flex;
+        }
+        
+        .mobile-menu-dropdown .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        @keyframes slideDown {
+            from {
+            opacity: 0;
+            transform: translateY(-10px);
+            }
+            to {
+            opacity: 1;
+            transform: translateY(0);
+            }
+        }
+        }
+
+        @media (max-width: 480px) {
+        .mobile-menu-dropdown {
+            width: 180px;
+            padding: 12px;
+            gap: 8px;
+            top: calc(100% + 6px);
+        }
+        }
+
+        @media (max-width: 375px) {
+        .mobile-menu-dropdown {
+            width: 160px;
+            padding: 10px;
+            gap: 6px;
+            top: calc(100% + 4px);
+        }
+        }
+        
+        @media (min-width:769px){
+        .show-mobile{display:none}
+        }
+    
+        /* Footer */
+        footer{padding:32px 0;color:var(--text-secondary)}
+        @media (max-width:768px){footer{padding:24px 0}}
+        @media (max-width:480px){footer{padding:20px 0}}
+        
+        .footer-content{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+        @media (max-width:768px){.footer-content{gap:8px}}
+        @media (max-width:480px){.footer-content{flex-direction:column;align-items:center;text-align:center;gap:16px}}
+        @media (max-width:375px){.footer-content{gap:12px}}
+        
+        .footer-links{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+        @media (max-width:768px){.footer-links{gap:8px}}
+        @media (max-width:480px){.footer-links{width:100%;justify-content:center;gap:12px}}
+        @media (max-width:375px){.footer-links{gap:8px}}
+        
+        /* Sections */
+        section{padding:48px 0;border-top:1px solid var(--border)}
+        @media (max-width:768px){section{padding:32px 0}}
+        @media (max-width:480px){section{padding:24px 0}}
+
+        @font-face {
+            font-family: 'Lalezar Font';
+            src: url('fonts/Lalezar-Regular.ttf') format('ttf');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body{
+            /* background-image: linear-gradient(to bottom, rgb(17, 18, 13) 70%,  #565449);
+            background-color: rgb(17, 18, 13);
+            height: 100%; 
+            margin: 0; /* Removes default body margin  */
+            background-image: url(images/22d78027ab249cbfff08f060638774c6.png), url(images/_\ -\ 2025-09-29T165204.932.jpeg);
+            background-position: center bottom, center top;
+            background-repeat: no-repeat, repeat;
+            background-size: contain;
+        }
+
+        * {
+            font-family:  'Lalezar Font', Arial, Helvetica;
+            text-transform: uppercase;
+            color: #FFFBF4;
+            text-align: center;
+        }
+        h1 {
+            color:  rgb(86, 84, 73);
+        }
+        h2 {
+            color:  #D8CFBC;
+        }
+        p {
+            color: white;
+        }
+        input, select{
+            background-color: transparent;
+            padding: 1.5% 1% 1.5% 1%;
+            margin: 1% 3% 1% 0%;
+            border-width: 2px;
+            border-color: rgb(86, 84, 73);
+        }
+        input:focus{
+            background-color: transparent;
+            padding: 1.5% 1% 1.5% 1%;
+            margin: 1% 3% 1% 0%;
+            border-width: 2px;
+            border-color: rgb(86, 84, 73);
+            color: red;
+        }
+       </style>
+
+       <script>
+            // Responsive navigation for mobile
+            function toggleMobileNav() {
+            const mobileNav = document.querySelector('.mobile-nav');
+            const menuBtn = document.querySelector('.mobile-nav .btn');
+            
+            mobileNav.classList.toggle('mobile-open');
+            
+            // Update button text
+            if (mobileNav.classList.contains('mobile-open')) {
+                menuBtn.textContent = 'Close';
+            } else {
+                menuBtn.textContent = 'Menu';
+            }
+            }
+            
+            // Close mobile nav when clicking outside
+            document.addEventListener('click', function(event) {
+            const mobileNav = document.querySelector('.mobile-nav');
+            const menuBtn = document.querySelector('.mobile-nav .btn');
+            
+            if (mobileNav.classList.contains('mobile-open') && 
+                !mobileNav.contains(event.target) && 
+                !menuBtn.contains(event.target)) {
+                mobileNav.classList.remove('mobile-open');
+                menuBtn.textContent = 'Menu';
+            }
+            });
+
+            // Close mobile nav when clicking on a nav link
+            document.addEventListener('click', function(event) {
+            if (event.target.closest('nav a')) {
+                const mobileNav = document.querySelector('.mobile-nav');
+                const menuBtn = document.querySelector('.mobile-nav .btn');
+                
+                mobileNav.classList.remove('mobile-open');
+                menuBtn.textContent = 'Menu';
+            }
+            });
+       </script>
+    </head>
+
+    <body>
+        <div class="container">
+            <header>
+                <img src="letteredlogo32x32.png" alt="Lettered Logo" class="logo-img">
+                <h1>Lettered</h1>
+                <nav>
+                    <!-- Desktop navigation -->
+                    <div class="desktop-nav">
+                        <a href="#about" class="btn">About</a>
+                        <a href="#access" class="btn">Access</a>
+                        <a href="#faqs" class="btn">FAQs</a>
+                    </div>
+                    
+                    <!-- Mobile navigation -->
+                    <div class="mobile-nav">
+                        <button class="btn" onclick="toggleMobileNav()">Menu</button>
+                        <!-- Mobile dropdown menu -->
+                        <div class="mobile-menu-dropdown">
+                            <a href="#about" class="btn">About</a>
+                            <a href="#access" class="btn">Access</a>
+                            <a href="#faqs" class="btn">FAQs</a>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <main>
+                <!-- About Lettered Section -->
+                <section id="about">
+                    <div>
+                        <h1>About</h1>
+                        <p style="font-style: italic;">Part digital yard, part legacy archive, part private social network. A culturally vibrant, trusted space where members of the D9 can represent, organize, reminisce, and flex their history and culture.</p>
+                    </div>
+                    <br>
+                </section>
+
+                <!-- Access/Verification Form Section -->
+                <section id="access">
+                    <div>
+                        <h1>Gain Access</h1>
+
+                        <!-- Verification Form -->
+                        <div class="form">
+                            <form>
+                                <label for="fname">First Name:</label>
+                                <input type="text" id="fname" name="fname" required autofocus>
+
+                                <label for="lname">Last Name:</label>
+                                <input type="text" id="lname" name="lname" required>
+
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+
+                                <br>
+
+                                <label for="lineName">Line Name:</label>
+                                <input type="text" id="lineName" name="lineName" required>
+
+                                <label for="lineNumber">Line Number:</label>
+                                <input type="number" id="lineNumber" name="lineNumber" min="1" max="999" maxlength="3" required>
+
+                                <br>
+
+                                <label for="orgs">Organization:</label>
+                                <select id="orgs" name="orgs" required>
+                                    <option value="alpha">Alpha Phi Alpha Fraternity, Inc.</option>
+                                    <option value="aka">Alpha Kappa Alpha Sorority, Inc.</option>
+                                    <option value="kappa">Kappa Alpha Psi Fraternity, Inc.</option>
+                                    <option value="que">Omega Psi Phi Fraternity, Inc.</option>
+                                    <option value="delta">Delta Sigma Theta Sorority, Inc.</option>
+                                    <option value="sigma">Phi Beta Sigma Fraternity, Inc.</option>
+                                    <option value="sgrho">Sigma Gamma Rho Sorority, Inc.</option>
+                                    <option value="zeta">Zeta Phi Beta Sorority, Inc.</option>
+                                    <option value="iota">Iota Phi Theta Fraternity, Inc.</option>
+                                </select>
+
+                                <label for="orgs">Chapter Name:</label>
+                                <input type="text" id="chapName" name="chapName" required>
+
+                                <label for="orgs">City Chapter Located:</label>
+                                <input type="text" id="city" name="city" required autocomplete="address-level2">
+
+                                <label for="orgs">University Chapter Located:</label>
+                                <input type="text" id="university" name="university" required autocomplete="on">
+
+                                <br>
+
+                                <label for="smedia1">Social Media:</label>
+                                <input type="url" id="smedia1" name="smedia1" placeholder="Instagram" size="10">
+                                <input type="url" id="smedia2" name="smedia2" placeholder="TikTok" size="10">
+                                <input type="url" id="smedia3" name="smedia3" placeholder="Facebook" size="10">  
+                                <input type="url" id="usmedia4" name="smedia4" placeholder="Twitter" size="10">
+
+                                <br>
+
+                                <label for="pariImage">Picture in Pari:</label>
+                                <input type="file" id="pariImage" name="pariImage" width="75" height="75">
+
+                                <br>
+
+                                <input type="submit" value="Submit">
+                            </form>
+                            <p style="font-style: italic; font-size: 11px; margin-top: 20px;">Submitting social links and/or a picture wearing pari speeds up verification.</p>
+                        </div>
+                    </div>
+                    <br>
+                </section>
+
+                <!-- FAQs Section -->
+                <section id="faqs">
+                    <h1>FAQs</h1>
+                    <div>
+                        <h2>How long is verification?</h2>
+                        <p>Verification can take up to 2-3 days.</p>
+                        <h2>Is this affiliated with Watch The Yard?</h2>
+                        <p>No. Lettered is not affiliated with Watch The Yard or any of the Official D9 organizations</p>
+                        <h2>Does it cost?</h2>
+                        <p>No</p>
+                        <h2>What happens after verification?</h2>
+                        <p>Verified member will recieve an email with steps to access the app</p>
+                    </div>
+                </section>
+            </main>
+
+            <footer>
+                <div class="footer-content">
+                    <div><strong>Lettered</strong></div>
+
+                    <div class="footer-links">
+                        <div class="small">letteredapp@gmail.com</div>
+                        <a href="/privacy.html" class="small">Privacy</a>
+                        <a href="/terms.html" class="small">Terms</a>
+                    </div>
+
+                    <div class="small">&copy; 2025 Lettered. All Rights Reserved.</div>
+                </div>
+              </footer>
+
+        </div>
+    </body>
+</html>
+
+
