@@ -163,10 +163,10 @@
             height: 100%; 
             margin: 0; /* Removes default body margin  */
             /* background-image: url(images/2025-09-29T165204.932.jpeg), url(images/22d78027ab249cbfff08f060638774c6.png); */
-            background-image: url(images/maaike-vrijenhoek-gObs8hUHg0s-unsplash.jpg);
+            /* background-image: url(images/maaike-vrijenhoek-gObs8hUHg0s-unsplash.jpg);
             background-position: center;
             background-repeat: no-repeat;
-            background-size: cover;
+            background-size: cover; */
         }
 
         * {
@@ -202,6 +202,15 @@
             border-color: rgb(151, 0, 0);
             color: #F0E7DA;
         }
+        #backgroundVideo{
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            opacity: 10%;
+        }
+
        </style>
 
        <script>
@@ -248,6 +257,9 @@
 
     <body>
         <div class="container">
+            <video autoplay muted loop id="backgroundVideo">
+                <source src="videos/MIZZOU-ALPHAS-ALPHA-PHI-ALPHA-V-ISLAND-STROLL.mp4" type="video/mp4">
+              </video>
             <header>
                 <img src="images/letteredlogo32x32.png" alt="Lettered Logo" class="logo-img">
                 <!-- <h1>Lettered</h1> -->
