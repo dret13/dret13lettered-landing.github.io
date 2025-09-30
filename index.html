@@ -190,7 +190,7 @@
         p {
             color:rgb(22 24 51);
         }
-        a{
+        a, button{
             text-decoration: none;
             color: #F0E7DA;
         }
@@ -228,7 +228,7 @@
             justify-content: center;
             text-align: center;
             padding: 2rem;
-            background-color: #F0E7DA;
+            /* background-color: #F0E7DA; */
         }
        </style>
 
@@ -391,9 +391,9 @@
                         <button class="btn" onclick="toggleMobileNav()">Menu</button>
                         <!-- Mobile dropdown menu -->
                         <div class="mobile-menu-dropdown">
-                            <a href="#about" class="btn">About</a>
-                            <a href="#access" class="btn">Access</a>
-                            <a href="#faqs" class="btn">FAQs</a>
+                            <button onclick="showSection('about')">About</button>
+                            <button onclick="showSection('access')">Access</button>
+                            <button onclick="showSection('faq')">FAQs</button>
                         </div>
                     </div>
                 </nav>
