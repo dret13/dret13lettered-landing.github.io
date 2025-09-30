@@ -228,6 +228,7 @@
             justify-content: center;
             text-align: center;
             padding: 2rem;
+            background-color: #F0E7DA;
         }
        </style>
 
@@ -362,6 +363,7 @@
             const content = document.getElementById('content');
             content.innerHTML = sections[section];
             }
+
        </script>
     </head>
 
@@ -376,9 +378,12 @@
                 <nav>
                     <!-- Desktop navigation -->
                     <div class="desktop-nav">
-                        <a href="#about" class="btn">About</a>
+                        <!-- <a href="#about" class="btn">About</a>
                         <a href="#access" class="btn">Access</a>
-                        <a href="#faqs" class="btn">FAQs</a>
+                        <a href="#faqs" class="btn">FAQs</a> -->
+                        <button onclick="showSection('#about')">About</button>
+                        <button onclick="showSection('#access')">Access</button>
+                        <button onclick="showSection('#faqs')">FAQs</button>
                     </div>
                     
                     <!-- Mobile navigation -->
@@ -398,7 +403,7 @@
                 <h1>Welcome to our site</h1>
                 <p>Select a section above to learn more.</p>
 
-                /* About Lettered Section */
+                
                 <!-- <section id="about">
                     <div>
                         <h1>About</h1>
