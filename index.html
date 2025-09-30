@@ -220,7 +220,15 @@
             z-index: 1;
             background-blend-mode: luminosity;
         }
-
+        main{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
        </style>
 
        <script>
@@ -262,52 +270,15 @@
                 menuBtn.textContent = 'Menu';
             }
             });
-       </script>
-    </head>
-
-    <body>
-        <div class="container">
-            <!-- <video autoplay muted loop id="backgroundVideo">
-                <source src="videos/MIZZOU-ALPHAS-ALPHA-PHI-ALPHA-V-ISLAND-STROLL.mp4" type="video/mp4">
-              </video> -->
-            <header>
-                <img src="images/letteredlogo32x32.png" alt="Lettered Logo" class="logo-img">
-                <!-- <h1>Lettered</h1> -->
-                <nav>
-                    <!-- Desktop navigation -->
-                    <div class="desktop-nav">
-                        <a href="#about" class="btn">About</a>
-                        <a href="#access" class="btn">Access</a>
-                        <a href="#faqs" class="btn">FAQs</a>
-                    </div>
-                    
-                    <!-- Mobile navigation -->
-                    <div class="mobile-nav">
-                        <button class="btn" onclick="toggleMobileNav()">Menu</button>
-                        <!-- Mobile dropdown menu -->
-                        <div class="mobile-menu-dropdown">
-                            <a href="#about" class="btn">About</a>
-                            <a href="#access" class="btn">Access</a>
-                            <a href="#faqs" class="btn">FAQs</a>
-                        </div>
-                    </div>
-                </nav>
-            </header>
-
-            <main>
-                <!-- About Lettered Section -->
-                <section id="about">
-                    <div>
-                        <h1>About</h1>
-                        <p style="font-style: italic;">Part digital yard, part legacy archive, part private social network. A culturally vibrant, trusted space where members of the D9 can represent, organize, reminisce, and flex their history and culture.</p>
-                    </div>
-                    <br>
-                </section>
-
-                <!-- Access/Verification Form Section -->
-                <section id="access">
-                    <div>
-                        <h1>Gain Access</h1>
+            
+            // Dynamic Section Container
+            const sections = {
+            about: `
+                <h1>About</h1>
+                    <p style="font-style: italic;">Part digital yard, part legacy archive, part private social network. A culturally vibrant, trusted space where members of the D9 can represent, organize, reminisce, and flex their history and culture.</p>
+            `,
+            access: `
+                <h1>Gain Access</h1>
 
                         <!-- Verification Form -->
                         <div class="form">
@@ -371,13 +342,145 @@
                                 <input type="submit" value="Submit">
                             </form>
                             <p style="font-style: italic; font-size: 11px; margin-top: 20px;">Submitting social links and/or a picture wearing pari speeds up verification.</p>
+            `,
+            faq: `
+                <h1>FAQs</h1>
+                    <div>
+                        <h2>How long is verification?</h2>
+                        <p>Verification can take up to 2-3 days.</p>
+                        <h2>Is this affiliated with Watch The Yard?</h2>
+                        <p>No. Lettered is not affiliated with Watch The Yard or any of the Official D9 organizations</p>
+                        <h2>Does it cost?</h2>
+                        <p>No</p>
+                        <h2>What happens after verification?</h2>
+                        <p>Verified member will recieve an email with steps to access the app</p>
+                    </div>
+            `
+            };
+
+            function showSection(section) {
+            const content = document.getElementById('content');
+            content.innerHTML = sections[section];
+            }
+       </script>
+    </head>
+
+    <body>
+        <div class="container">
+            <!-- <video autoplay muted loop id="backgroundVideo">
+                <source src="videos/MIZZOU-ALPHAS-ALPHA-PHI-ALPHA-V-ISLAND-STROLL.mp4" type="video/mp4">
+              </video> -->
+            <header>
+                <img src="images/letteredlogo32x32.png" alt="Lettered Logo" class="logo-img">
+                <!-- <h1>Lettered</h1> -->
+                <nav>
+                    <!-- Desktop navigation -->
+                    <div class="desktop-nav">
+                        <a href="#about" class="btn">About</a>
+                        <a href="#access" class="btn">Access</a>
+                        <a href="#faqs" class="btn">FAQs</a>
+                    </div>
+                    
+                    <!-- Mobile navigation -->
+                    <div class="mobile-nav">
+                        <button class="btn" onclick="toggleMobileNav()">Menu</button>
+                        <!-- Mobile dropdown menu -->
+                        <div class="mobile-menu-dropdown">
+                            <a href="#about" class="btn">About</a>
+                            <a href="#access" class="btn">Access</a>
+                            <a href="#faqs" class="btn">FAQs</a>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <main id="content">
+                <h1>Welcome to our site</h1>
+                <p>Select a section above to learn more.</p>
+
+                /* About Lettered Section */
+                <!-- <section id="about">
+                    <div>
+                        <h1>About</h1>
+                        <p style="font-style: italic;">Part digital yard, part legacy archive, part private social network. A culturally vibrant, trusted space where members of the D9 can represent, organize, reminisce, and flex their history and culture.</p>
+                    </div>
+                    <br>
+                </section> -->
+
+                <!-- Access/Verification Form Section -->
+                <!-- <section id="access">
+                    <div>
+                        <h1>Gain Access</h1> -->
+
+                        <!-- Verification Form -->
+                        <!-- <div class="form">
+                            <form>
+                                <label for="fname">First Name:</label>
+                                <input type="text" id="fname" name="fname" required autofocus>
+
+                                <label for="lname">Last Name:</label>
+                                <input type="text" id="lname" name="lname" required>
+
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+
+                                <br>
+
+                                <label for="lineName">Line Name:</label>
+                                <input type="text" id="lineName" name="lineName" required>
+
+                                <label for="lineNumber">Line Number:</label>
+                                <input type="number" id="lineNumber" name="lineNumber" min="1" max="999" maxlength="3" required>
+
+                                <br>
+
+                                <label for="orgs">Organization:</label>
+                                <select id="orgs" name="orgs" required>
+                                    <option value="alpha">Alpha Phi Alpha Fraternity, Inc.</option>
+                                    <option value="aka">Alpha Kappa Alpha Sorority, Inc.</option>
+                                    <option value="kappa">Kappa Alpha Psi Fraternity, Inc.</option>
+                                    <option value="que">Omega Psi Phi Fraternity, Inc.</option>
+                                    <option value="delta">Delta Sigma Theta Sorority, Inc.</option>
+                                    <option value="sigma">Phi Beta Sigma Fraternity, Inc.</option>
+                                    <option value="sgrho">Sigma Gamma Rho Sorority, Inc.</option>
+                                    <option value="zeta">Zeta Phi Beta Sorority, Inc.</option>
+                                    <option value="iota">Iota Phi Theta Fraternity, Inc.</option>
+                                </select>
+
+                                <label for="orgs">Chapter Name:</label>
+                                <input type="text" id="chapName" name="chapName" required>
+
+                                <label for="orgs">City Chapter Located:</label>
+                                <input type="text" id="city" name="city" required autocomplete="address-level2">
+
+                                <label for="orgs">University Chapter Located:</label>
+                                <input type="text" id="university" name="university" required autocomplete="on">
+
+                                <br>
+
+                                <label for="smedia1">Social Media:</label>
+                                <input type="url" id="smedia1" name="smedia1" placeholder="Instagram" size="10">
+                                <input type="url" id="smedia2" name="smedia2" placeholder="TikTok" size="10">
+                                <input type="url" id="smedia3" name="smedia3" placeholder="Facebook" size="10">  
+                                <input type="url" id="usmedia4" name="smedia4" placeholder="Twitter" size="10">
+
+                                <br>
+
+                                <label for="pariImage">Picture in Pari:</label>
+                                <input type="file" id="pariImage" name="pariImage" width="75" height="75">
+
+                                <br>
+
+                                <input type="submit" value="Submit">
+                            </form>
+                            <p style="font-style: italic; font-size: 11px; margin-top: 20px;">Submitting social links and/or a picture wearing pari speeds up verification.</p>
                         </div>
                     </div>
                     <br>
-                </section>
+                </section> -->
 
                 <!-- FAQs Section -->
-                <section id="faqs">
+                <!-- <section id="faqs">
                     <h1>FAQs</h1>
                     <div>
                         <h2>How long is verification?</h2>
@@ -389,7 +492,7 @@
                         <h2>What happens after verification?</h2>
                         <p>Verified member will recieve an email with steps to access the app</p>
                     </div>
-                </section>
+                </section>  -->
             </main>
 
             <footer>
