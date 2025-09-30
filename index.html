@@ -31,7 +31,36 @@
         @media (max-width:375px){.logo-img{max-width:32px}}
         @media (max-width:320px){.logo-img{max-width:28px}}
         
-        nav{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+        /* nav{display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+            align-items:center
+        } */
+
+        nav {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: #f5f5f5;
+        border-bottom: 1px solid #ddd;
+        }
+
+        nav button {
+        padding: 0.5rem 1rem;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        }
+
+        nav button:hover {
+        background: #0056b3;
+        }
+
+
         @media (max-width:768px){nav{gap:8px}}
         @media (max-width:480px){nav{width:100%;justify-content:space-between;gap:6px}}
         @media (max-width:375px){nav{gap:4px}}
@@ -230,6 +259,12 @@
             text-align: center;
             padding: 2rem;
             /* background-color: #F0E7DA; */
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        /* Hidden state */
+        main.fade-out {
+        opacity: 0;
         }
        </style>
 
@@ -362,9 +397,16 @@
 
             function showSection(section) {
             const content = document.getElementById('content');
-            content.innerHTML = sections[section];
-            }
+            // Add fade-out class
+            content.classList.add('fade-out');
 
+            // After fade-out completes, swap content
+            setTimeout(() => {
+                content.innerHTML = sections[section];
+                // Remove fade-out (which triggers fade-in automatically)
+                content.classList.remove('fade-out');
+            }, 500); // match CSS transition duration
+            }
        </script>
     </head>
 
