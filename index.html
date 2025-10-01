@@ -289,6 +289,27 @@
             background-color: #F0E7DA;
         }
 
+        .main-picture-grid{
+            display: grid; /* Enables CSS Grid layout */
+            grid-template-columns: repeat(2, 1fr); /* Creates 2 columns, each taking an equal fraction of available space */
+            grid-template-rows: repeat(2, 1fr); /* Creates 2 rows, each taking an equal fraction of available space */
+            gap: 10px; /* Adds a gap of 10px between grid items (both rows and columns) */
+            /* Optional: Set a width or max-width for the container */
+            width: 300px;
+            margin: 0 auto; /* Centers the container on the page */
+            z-index: 0;
+        }
+        .picture-grid-card{
+            background-color: lightblue;
+            border: 1px solid darkblue;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .mySlides {
+            display: none;
+        }
+
        </style>
 
        <script>
@@ -624,6 +645,44 @@
                 content.classList.remove('fade-out');
             }, 300); // match CSS transition duration
             }
+
+
+            document.addEventListener("DOMContentLoaded", function() {
+            // Get all elements with the class 'slideshow-box'
+            const slideshows = document.querySelectorAll('.picture-grid-card');
+            
+            // Loop through each slideshow box
+            slideshows.forEach(slideshow => {
+                let slideIndex = 0;
+                const slides = slideshow.querySelectorAll('.mySlides');
+
+                // Function to show the slides for a specific slideshow
+                function showSlides() {
+                // Hide all slides in the current slideshow
+                slides.forEach(slide => {
+                    slide.style.display = 'none';
+                });
+
+                // Increment the slide index
+                slideIndex++;
+                
+                // Reset the index if it exceeds the number of slides
+                if (slideIndex > slides.length) {
+                    slideIndex = 1;
+                }
+                
+                // Display the current slide
+                slides[slideIndex - 1].style.display = 'block';
+
+                // Call the function again after a delay
+                setTimeout(showSlides, 3000); // Change image every 3 seconds
+                }
+
+                // Start the slideshow for the current box
+                showSlides();
+            });
+            });
+
        </script>
     </head>
 
@@ -632,6 +691,41 @@
             <header>
                 <img src="images/letteredvelocityfont.png" alt="Lettered Logo" class="logo-img">
             </header>
+
+            <div class="main-picture-grid">
+                <div class="picture-grid-card">
+                    <div class="mySlides">  
+                        <img src="images/Nupes.jpeg">
+                    </div>
+                    <div class="mySlides">  
+                        <img src="images/(Swipe ⬅️)_ Happy 118th Founders Day to the Men of Alpha Phi Alpha Fraternity, Inc_ __#1906 #MENOFDISTINCTION #ICECOLD 🧊🦍__“First of All, Servants of All, We Shall Transcend All”__(📸_ Hill Harper, Google Image Search) 🎥.jpeg">
+                    </div>
+                </div>
+                <div class="picture-grid-card">
+                    <div class="mySlides">  
+                        <img src="images/aka probate picture.jpeg">
+                    </div>
+                    <div class="mySlides">  
+                        <img src="images/alpha phi alpha fraternity probate staff.jpeg">
+                    </div>
+                </div>
+                <div class="mySlides picture-grid-card">
+                    <div class="mySlides">  
+                        <img src="images/01T001129.263.jpeg">
+                    </div>
+                    <div class="mySlides">  
+                        <img src="images/01T001403.517.jpeg">
+                    </div>
+                </div>
+                <div class="mySlides picture-grid-card">
+                    <div class="mySlides">  
+                        <img src="images/aka.jpeg">
+                    </div>
+                    <div class="mySlides">  
+                        <img src="images/BB.jpeg">
+                    </div>
+                </div>
+            </div>
 
             <main id="content">
                 <nav>
