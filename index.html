@@ -343,7 +343,27 @@
                     <p style="font-style: italic;"> Part digital yard, part legacy archive, part private social network. A culturally vibrant, trusted space where members of the D9 can represent, organize, reminisce, and flex their history and culture.</p>
             `,
             access: `
-                <h1>Gain Access</h1>
+                <nav>
+                    <div class="desktop-nav">
+                        <!-- <a href="#about" class="btn">About</a>
+                        <a href="#access" class="btn">Access</a>
+                        <a href="#faqs" class="btn">FAQs</a> -->
+                        <button onclick="showSection('about')">About</button>
+                        <button onclick="showSection('access')">Access</button>
+                        <button onclick="showSection('faq')">FAQs</button>
+                    </div>
+                    <div class="mobile-nav">
+                        <button class="btn" onclick="toggleMobileNav()">Menu</button>
+                        <!-- Mobile dropdown menu -->
+                        <div class="mobile-menu-dropdown">
+                            <button onclick="showSection('about')">About</button>
+                            <button onclick="showSection('access')">Access</button>
+                            <button onclick="showSection('faq')">FAQs</button>
+                        </div>
+                    </div>
+                </nav>
+                    <br>
+                    <h1>Gain Access</h1>
 
                         <!-- Verification Form -->
                         <div class="form">
@@ -409,6 +429,26 @@
                             <p style="font-style: italic; font-size: 11px; margin-top: 20px;">Submitting social links and/or a picture wearing pari speeds up verification.</p>
             `,
             faq: `
+                <nav>
+                    <div class="desktop-nav">
+                        <!-- <a href="#about" class="btn">About</a>
+                        <a href="#access" class="btn">Access</a>
+                        <a href="#faqs" class="btn">FAQs</a> -->
+                        <button onclick="showSection('about')">About</button>
+                        <button onclick="showSection('access')">Access</button>
+                        <button onclick="showSection('faq')">FAQs</button>
+                    </div>
+                    <div class="mobile-nav">
+                        <button class="btn" onclick="toggleMobileNav()">Menu</button>
+                        <!-- Mobile dropdown menu -->
+                        <div class="mobile-menu-dropdown">
+                            <button onclick="showSection('about')">About</button>
+                            <button onclick="showSection('access')">Access</button>
+                            <button onclick="showSection('faq')">FAQs</button>
+                        </div>
+                    </div>
+                </nav>
+                    <br>
                 <h1>FAQs</h1>
                     <div>
                         <h2>How long is verification?</h2>
