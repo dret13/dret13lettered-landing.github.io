@@ -260,18 +260,20 @@
             padding: 2rem;
             /* background-color: #F0E7DA; */
             opacity: 1;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.3s ease;
         }
         /* Hidden state */
         main.fade-out {
         opacity: 0;
         }
+
         #content{
             border: 10px;
             border-radius: 7px;
             border-color:#F0E7DA;
             background-color: #F0E7DA;
         }
+
        </style>
 
        <script>
@@ -317,8 +319,19 @@
             // Dynamic Section Container
             const sections = {
             about: `
-                <h1>About</h1>
-                    <p style="font-style: italic;">Part digital yard, part legacy archive, part private social network. A culturally vibrant, trusted space where members of the D9 can represent, organize, reminisce, and flex their history and culture.</p>
+                    <nav>
+                    <div class="desktop-nav">
+                        <!-- <a href="#about" class="btn">About</a>
+                        <a href="#access" class="btn">Access</a>
+                        <a href="#faqs" class="btn">FAQs</a> -->
+                        <button onclick="showSection('about')">About</button>
+                        <button onclick="showSection('access')">Access</button>
+                        <button onclick="showSection('faq')">FAQs</button>
+                    </div>
+                    </nav>
+                    <br>
+                    <h1>About</h1>
+                    <p style="font-style: italic;"> Part digital yard, part legacy archive, part private social network. A culturally vibrant, trusted space where members of the D9 can represent, organize, reminisce, and flex their history and culture.</p>
             `,
             access: `
                 <h1>Gain Access</h1>
