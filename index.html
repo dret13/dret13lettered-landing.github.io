@@ -289,6 +289,139 @@
        </style>
 
        <script>
+
+        // Handle form submission
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const emailInput = form.querySelector('input[type="email"]');
+            const honeypotInput = form.querySelector('input[name="website"]');
+            const successMessage = form.parentNode.querySelector('.success-message');
+            
+            // Check honeypot field (if filled, likely a bot)
+            if (honeypotInput && honeypotInput.value) {
+                console.log('Bot detected via honeypot');
+                return;
+            }
+            
+            const email = emailInput.value;
+            
+            // Input sanitization
+            const sanitizedEmail = email.trim().toLowerCase();
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(sanitizedEmail)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            // Rate limiting (basic client-side)
+            const lastSubmission = localStorage.getItem('lastEmailSubmission');
+            const now = Date.now();
+            if (lastSubmission && (now - parseInt(lastSubmission)) < 60000) { // 1 minute cooldown
+                alert('Please wait a moment before submitting again');
+                return;
+            }
+            
+            if (sanitizedEmail) {
+                // Track the signup
+                trackSignup();
+                
+                // Store submission time for rate limiting
+                localStorage.setItem('lastEmailSubmission', now.toString());
+                
+                // Submit to secure backend
+                const result = await submitEmailSecurely(sanitizedEmail, honeypotInput?.value || '');
+                
+                if (result.success) {
+                // Show success message
+                successMessage.style.display = 'block';
+                form.style.display = 'none';
+                } else {
+                // Show error message
+                alert(result.error || 'Failed to submit email. Please try again.');
+                }
+            }
+            }
+
+            // Secure email submission function
+            async function submitEmailSecurely(email, website = '') {
+            try {
+                // Determine API URL based on environment
+                const apiUrl = config.isGitHubPages ? config.apiBaseUrl : config.fallbackApiUrl;
+                
+                // First, get CSRF token from server
+                const tokenResponse = await fetch(`${apiUrl}/api/csrf-token`, {
+                method: 'GET',
+                credentials: 'include'
+                });
+                
+                if (!tokenResponse.ok) {
+                throw new Error('Failed to get CSRF token');
+                }
+                
+                const { csrfToken } = await tokenResponse.json();
+                
+                // Submit email with CSRF protection
+                const response = await fetch(`${apiUrl}/api/beta-signup`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ 
+                    email: email,
+                    website: website // Honeypot field
+                })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                console.log('Email submitted successfully');
+                return { success: true, message: result.message };
+                } else {
+                throw new Error(result.error || 'Submission failed');
+                }
+            } catch (error) {
+                console.error('Error submitting email:', error);
+            }}
+            // Handle email input with real-time validation
+            function handleEmailInput(input) {
+            const email = input.value;
+            formData.email = email;
+            
+            const validationMessage = input.parentNode.querySelector('.email-validation-message');
+            
+            if (!email) {
+                validationMessage.style.display = 'none';
+                input.style.borderColor = 'var(--border)';
+                return;
+            }
+            
+            if (validateEmail(email)) {
+                validationMessage.textContent = '✅ Valid email address';
+                validationMessage.style.color = 'var(--success)';
+                validationMessage.style.display = 'block';
+                input.style.borderColor = 'var(--success)';
+            } else {
+                validationMessage.textContent = '❌ Please enter a valid email address';
+                validationMessage.style.color = '#dc2626';
+                validationMessage.style.display = 'block';
+                input.style.borderColor = '#dc2626';
+            }
+            }
+
+            // Email validation function
+            function validateEmail(email) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailRegex.test(email);
+            }
+
             // Responsive navigation for mobile
             function toggleMobileNav() {
             const mobileNav = document.querySelector('.mobile-nav');
@@ -387,7 +520,8 @@
                                 <input type="text" id="lname" name="lname" required>
                                 <br>
                                 <label for="email">Email:</label>
-                                <input type="email" id="email" name="email" required>
+                                <input type="email" id="email" name="email" onchange="handleTextInput('email', this.value)"
+                                oninput="handleEmailInput(this)" placeholder="your@email.com" required>
                                 <br>
 
                                 <label for="lineName">Line Name:</label>
@@ -536,5 +670,3 @@
         </div>
     </body>
 </html>
-
-
