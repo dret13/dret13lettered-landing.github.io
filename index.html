@@ -271,6 +271,7 @@
             z-index: 1;
             background-blend-mode: luminosity;
         }
+        
         main{
             /* flex: 1; */
             display: block;
@@ -289,6 +290,7 @@
             margin-bottom: 10rem;
             overflow: scroll;
         }
+
         /* Hidden state */
         main.fade-out {
             opacity: 0;
@@ -310,7 +312,7 @@
             display: grid; /* Enables CSS Grid layout */
             grid-template-columns: repeat(2, 1fr); /* Creates 2 columns, each taking an equal fraction of available space */
             grid-template-rows: repeat(2, 1fr); /* Creates 2 rows, each taking an equal fraction of available space */
-            gap: 1rem; /* Adds a gap of 10px between grid items (both rows and columns) */
+            gap: 3rem; /* Adds a gap of 10px between grid items (both rows and columns) */
             /* Optional: Set a width or max-width for the container */
             width: 100%;
             position: relative;
@@ -321,6 +323,7 @@
             justify-content: center;
             align-content: center ;
         }
+
         .picture-grid-card{
             background-color: white;
             border: 1px solid darkblue;
@@ -333,6 +336,7 @@
             height: auto;
             align-content: center;
         }
+
         .picture-grid-card img{
             position: relative;
             z-index: -1;
@@ -340,6 +344,7 @@
             height: fit-content;
             filter: grayscale(85%);
         }
+
         .mySlides {
             display: none;
         }
@@ -347,11 +352,13 @@
         footer p{
             margin-bottom: 0rem;
         }
+
         .app-store-btns{
             flex: 1;
             flex-direction: row;
             gap: 2rem;
         }
+
         .app-store-btns a img{
             width: 20%;
             height: auto;
