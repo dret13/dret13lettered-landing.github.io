@@ -275,8 +275,10 @@
             /* background-color: #F0E7DA; */
             opacity: 1;
             width: 50%;
+            height: auto;
             transition: opacity 0.3s ease;
             margin-bottom: 10rem;
+            z-index: 1;
         }
         /* Hidden state */
         main.fade-out {
@@ -299,7 +301,7 @@
             width: 100%;
             height: auto;
             margin: 0 auto; /* Centers the container on the page */
-            z-index: 0;
+            z-index: -1;
             align-items: center;
             justify-content: center;
         }
