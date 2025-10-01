@@ -296,7 +296,8 @@
             grid-template-rows: repeat(2, 1fr); /* Creates 2 rows, each taking an equal fraction of available space */
             gap: 10px; /* Adds a gap of 10px between grid items (both rows and columns) */
             /* Optional: Set a width or max-width for the container */
-            width: 300px;
+            width: 100%;
+            height: auto;
             margin: 0 auto; /* Centers the container on the page */
             z-index: 0;
             align-items: center;
@@ -308,11 +309,13 @@
             padding: 20px;
             text-align: center;
             font-size: 1.2em;
+            width: 45%;
+            height: auto;
         }
-        .picture-grid-card.img{
+        /* .picture-grid-card.img{
             width: 40%;
             height: 40%;
-        }
+        } */
         .mySlides {
             display: none;
         }
