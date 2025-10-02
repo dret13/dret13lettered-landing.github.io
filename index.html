@@ -348,10 +348,11 @@
         .picture-grid-card img{
             position: relative;
             z-index: -1;
-            width: 100%;
-            height: fit-content;
             filter: grayscale(85%);
-            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* fill box and crop overflow */
+            display: block;
         }
 
         .mySlides {
