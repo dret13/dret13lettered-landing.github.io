@@ -283,6 +283,7 @@
             background-blend-mode: luminosity;
         }
 
+        /* Main/Middle Container */
         main{
             display: block;
             align-items: center;
@@ -315,6 +316,49 @@
             transition: opacity 0.3s ease;
             height: 70%;
         }
+
+        @media (max-width:768px){main{
+            display: block;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            width: 40%;
+            position: absolute;
+            z-index: 4;
+            height: auto;
+            margin-bottom: 10rem;
+            overflow: scroll;}}
+        @media (max-width:480px){main{
+            display: block;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            width: 40%;
+            position: absolute;
+            z-index: 4;
+            height: 40%;
+            margin-bottom: 15rem;
+            overflow: scroll;}}
+        @media (max-width:375px){main{
+            display: block;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            width: 40%;
+            position: absolute;
+            z-index: 4;
+            height: 25%;
+            margin-bottom: 20rem;
+            overflow: scroll;}}
+
+
+        @media (max-width:768px){#content{margin-top: 2rem;}}
+        @media (max-width:480px){#content{margin-top: 1rem;}}
+        @media (max-width:375px){#content{margin-top: 0.5rem;}}
+
 
         .main-picture-grid{
             display: grid; /* Enables CSS Grid layout */
@@ -394,6 +438,7 @@
             height: auto;
         }
 
+        /* Form */
         form label{
             font-size: small;
         }
@@ -405,6 +450,18 @@
         form{
             margin-top: 3rem;
         }
+
+        /* @media (max-width:768px){form{margin-top: 2rem;}}
+        @media (max-width:480px){form{margin-top: 1rem;}}
+        @media (max-width:375px){form{margin-top: 0.5rem;}}
+
+        @media (max-width:768px){form label{margin-top: 2rem;}}
+        @media (max-width:480px){form label{margin-top: 1rem;}}
+        @media (max-width:375px){form label{margin-top: 0.5rem;}}
+
+        @media (max-width:768px){form input{margin-top: 2rem;}}
+        @media (max-width:480px){form input{margin-top: 1rem;}}
+        @media (max-width:375px){form input{margin-top: 0.5rem;}} */
 
        </style>
 
