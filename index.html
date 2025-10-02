@@ -340,10 +340,12 @@
             font-size: 1.2em;
             position: relative;
             z-index: -1;
-            width: 75%;
-            height: 550px;
-            overflow: hidden;
-            align-content: center;
+            width: 100%; /* full width inside grid cell */
+            aspect-ratio: 4 / 3; /* ensures consistent card shape */
+            overflow: hidden; /* crop overflow */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .picture-grid-card img{
@@ -354,10 +356,19 @@
             height: 100%;
             object-fit: cover; /* fill box and crop overflow */
             display: block;
+            object-position: center; /* center focal point */
+            display: block;
+            transform: scale(1.05); /* slight default zoom to eliminate edges */
         }
 
+        /* Individual slides */
         .mySlides {
-            display: none;
+            position: absolute; /* stacked on top of each other */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none; /* hidden initially */
         }
 
         footer p{
@@ -739,11 +750,12 @@
                     .then(data => {
                         Object.keys(data).forEach(boxId => {
                             const container = document.getElementById(boxId);
-
-                            // Clear existing content
                             container.innerHTML = "";
 
-                            // Add slides from JSON
+                            const images = [];
+                            let loadedCount = 0;
+
+                            // Create slides and preload images
                             data[boxId].forEach(src => {
                                 const slideDiv = document.createElement("div");
                                 slideDiv.classList.add("mySlides");
@@ -753,12 +765,43 @@
 
                                 slideDiv.appendChild(img);
                                 container.appendChild(slideDiv);
+
+                                images.push(img);
+
+                                img.onload = () => {
+                                    loadedCount++;
+                                    // Once all images are loaded, apply consistent scaling
+                                    if (loadedCount === images.length) {
+                                        scaleSlidesToCard(container, images);
+                                    }
+                                };
                             });
                         });
 
-                        // Start slideshows after injection
                         initSlideshows();
                     });
+
+                // Function to scale all slides uniformly
+                function scaleSlidesToCard(card, images) {
+                    const cardRatio = card.offsetWidth / card.offsetHeight;
+
+                    images.forEach(img => {
+                        const imgRatio = img.naturalWidth / img.naturalHeight;
+
+                        if (imgRatio > cardRatio) {
+                            // Image is wider than card
+                            img.style.width = "auto";
+                            img.style.height = "100%";
+                        } else {
+                            // Image is taller than card
+                            img.style.width = "100%";
+                            img.style.height = "auto";
+                        }
+
+                        // Optional: slight zoom buffer to cover edges
+                        img.style.transform = "scale(1.05)";
+                    });
+                }
 
                 function initSlideshows() {
                     const slideshows = document.querySelectorAll('.picture-grid-card');
@@ -771,20 +814,17 @@
                             slides.forEach(slide => (slide.style.display = "none"));
 
                             slideIndex++;
-                            if (slideIndex > slides.length) {
-                                slideIndex = 1;
-                            }
+                            if (slideIndex > slides.length) slideIndex = 1;
 
                             slides[slideIndex - 1].style.display = "block";
 
-                            setTimeout(showSlides, 2000); // change every 2s
+                            setTimeout(showSlides, 2000);
                         }
 
                         showSlides();
                     });
                 }
             });
-
        </script>
     </head>
 
