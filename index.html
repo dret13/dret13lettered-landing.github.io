@@ -731,7 +731,7 @@
 
 
             document.addEventListener("DOMContentLoaded", function () {
-                fetch("slideshow.json")
+                fetch("images.json")
                     .then(response => response.json())
                     .then(data => {
                         Object.keys(data).forEach(boxId => {
