@@ -304,7 +304,7 @@
         }
 
         #content{
-            border: 10px;
+            /* border: 10px;
             border-radius: 7px;
             border-color:rgb(34,49,29);
             background-color: white;
@@ -314,7 +314,17 @@
             margin-left: 15rem;
             opacity: 1;
             transition: opacity 0.3s ease;
-            height: 70%;
+            height: 70%; */
+            border: 2px solid rgb(34, 49, 29); /* Adjusted border width */
+            border-radius: 7px;
+            background-color: white;
+            padding: 1rem;
+            width: 90%; /* Use a percentage for better responsiveness */
+            max-width: 600px; /* Optional: Limit the maximum width */
+            margin: 2rem auto; /* Center with auto margins */
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            height: auto; /* Remove fixed height */
         }
 
         @media (max-width:768px){main{
