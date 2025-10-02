@@ -730,40 +730,56 @@
             }
 
 
-            document.addEventListener("DOMContentLoaded", function() {
-            // Get all elements with the class 'slideshow-box'
-            const slideshows = document.querySelectorAll('.picture-grid-card');
-            
-            // Loop through each slideshow box
-            slideshows.forEach(slideshow => {
-                let slideIndex = 0;
-                const slides = slideshow.querySelectorAll('.mySlides');
+            document.addEventListener("DOMContentLoaded", function () {
+                fetch("slideshow.json")
+                    .then(response => response.json())
+                    .then(data => {
+                        Object.keys(data).forEach(boxId => {
+                            const container = document.getElementById(boxId);
 
-                // Function to show the slides for a specific slideshow
-                function showSlides() {
-                // Hide all slides in the current slideshow
-                slides.forEach(slide => {
-                    slide.style.display = 'none';
-                });
+                            // Clear existing content
+                            container.innerHTML = "";
 
-                // Increment the slide index
-                slideIndex++;
-                
-                // Reset the index if it exceeds the number of slides
-                if (slideIndex > slides.length) {
-                    slideIndex = 1;
+                            // Add slides from JSON
+                            data[boxId].forEach(src => {
+                                const slideDiv = document.createElement("div");
+                                slideDiv.classList.add("mySlides");
+
+                                const img = document.createElement("img");
+                                img.src = src;
+
+                                slideDiv.appendChild(img);
+                                container.appendChild(slideDiv);
+                            });
+                        });
+
+                        // Start slideshows after injection
+                        initSlideshows();
+                    });
+
+                function initSlideshows() {
+                    const slideshows = document.querySelectorAll('.picture-grid-card');
+
+                    slideshows.forEach(slideshow => {
+                        let slideIndex = 0;
+                        const slides = slideshow.querySelectorAll('.mySlides');
+
+                        function showSlides() {
+                            slides.forEach(slide => (slide.style.display = "none"));
+
+                            slideIndex++;
+                            if (slideIndex > slides.length) {
+                                slideIndex = 1;
+                            }
+
+                            slides[slideIndex - 1].style.display = "block";
+
+                            setTimeout(showSlides, 2000); // change every 2s
+                        }
+
+                        showSlides();
+                    });
                 }
-                
-                // Display the current slide
-                slides[slideIndex - 1].style.display = 'block';
-
-                // Call the function again after a delay
-                setTimeout(showSlides, 2000); // Change image every 3 seconds
-                }
-
-                // Start the slideshow for the current box
-                showSlides();
-            });
             });
 
        </script>
@@ -802,65 +818,11 @@
             </main>
 
             <div class="main-picture-grid">
-                <div class="picture-grid-card">
-                    <div class="mySlides">  
-                        <img src="images/Nupes.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/Happy118th.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/aka probate picture.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/alpha phi alpha fraternity probate staff.jpeg">
-                    </div>
-                    
-                </div>
-                <div class="picture-grid-card">
-                    <div class="mySlides">  
-                        <img src="images/aka probate picture.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/alpha phi alpha fraternity probate staff.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/aka.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/BB.jpeg">
-                    </div>
-                </div>
-                <div class="picture-grid-card">
-                    <div class="mySlides">  
-                        <img src="images/01T001129.263.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/Happy118th.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/aka probate picture.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/alpha phi alpha fraternity probate staff.jpeg">
-                    </div>
-                </div>
-                <div class="picture-grid-card">
-                    <div class="mySlides">  
-                        <img src="images/aka.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/BB.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/alpha phi alpha fraternity probate staff.jpeg">
-                    </div>
-                    <div class="mySlides">  
-                        <img src="images/aka probate picture.jpeg">
-                    </div>
-                </div>
+                <div class="picture-grid-card" id="box1"></div>
+                <div class="picture-grid-card" id="box2"></div>
+                <div class="picture-grid-card" id="box3"></div>
+                <div class="picture-grid-card" id="box4"></div>
             </div>
-
 
             <footer>
                 <p style="color: #F0E7DA; font-size:large;"><strong>Trusted space for the divine nine</strong></p>
