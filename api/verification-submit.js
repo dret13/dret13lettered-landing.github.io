@@ -4,6 +4,7 @@
 // Import necessary modules
 const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
+const cloudinary = require('cloudinary').v2;
 
 // Rate limiting storage (in production, use Redis or a database)
 const submissions = new Map();
@@ -50,67 +51,41 @@ function sanitizeInput(input) {
         .replace(/\//g, '&#x2F;');
 }
 
-// Upload image to Google Drive
-async function uploadToGoogleDrive(imageData, fileName, email) {
+// Upload image to Cloudinary (Free image hosting)
+async function uploadToCloudinary(imageData, fileName, email) {
     try {
-        if (!process.env.GOOGLE_SHEETS_CREDENTIALS || !process.env.GOOGLE_DRIVE_FOLDER_ID) {
-            console.log('Google Drive not configured, skipping image upload...');
+        if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+            console.log('Cloudinary not configured, skipping image upload...');
             return null;
         }
 
-        const credentials = JSON.parse(process.env.GOOGLE_SHEETS_CREDENTIALS);
-        
-        // Create auth client with Drive scope
-        const auth = new google.auth.GoogleAuth({
-            credentials: credentials,
-            scopes: [
-                'https://www.googleapis.com/auth/spreadsheets',
-                'https://www.googleapis.com/auth/drive.file'
-            ],
+        // Configure Cloudinary
+        cloudinary.config({
+            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET
         });
 
-        const drive = google.drive({ version: 'v3', auth });
-
-        // Convert base64 to buffer
-        const base64Data = imageData.data.split(',')[1];
-        const buffer = Buffer.from(base64Data, 'base64');
-
-        // Create unique filename
+        // Create unique public ID
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
         const sanitizedEmail = email.replace(/[^a-zA-Z0-9]/g, '_');
-        const uniqueFileName = `${timestamp}_${sanitizedEmail}_${fileName}`;
+        const publicId = `lettered_verifications/${timestamp}_${sanitizedEmail}`;
 
-        // Upload file to Drive
-        const fileMetadata = {
-            name: uniqueFileName,
-            parents: [process.env.GOOGLE_DRIVE_FOLDER_ID]
-        };
-
-        const media = {
-            mimeType: imageData.type,
-            body: require('stream').Readable.from(buffer)
-        };
-
-        const file = await drive.files.create({
-            requestBody: fileMetadata,
-            media: media,
-            fields: 'id, webViewLink, webContentLink'
+        // Upload to Cloudinary
+        const result = await cloudinary.uploader.upload(imageData.data, {
+            public_id: publicId,
+            folder: 'lettered_verifications',
+            resource_type: 'image',
+            overwrite: false,
+            invalidate: true,
+            tags: ['verification', 'pari', email]
         });
 
-        // Make file accessible via link
-        await drive.permissions.create({
-            fileId: file.data.id,
-            requestBody: {
-                role: 'reader',
-                type: 'anyone'
-            }
-        });
-
-        console.log('Image uploaded to Google Drive:', file.data.webViewLink);
-        return file.data.webViewLink;
+        console.log('Image uploaded to Cloudinary:', result.secure_url);
+        return result.secure_url;
 
     } catch (error) {
-        console.error('Error uploading to Google Drive:', error);
+        console.error('Error uploading to Cloudinary:', error);
         return null;
     }
 }
@@ -158,9 +133,18 @@ async function writeToGoogleSheets(data, imageUrl) {
         ];
 
         // Append row to sheet
+        // Try to get sheet metadata first to find the correct sheet name
+        let sheetName = 'Sheet1';
+        try {
+            const metadata = await sheets.spreadsheets.get({ spreadsheetId });
+            sheetName = metadata.data.sheets[0].properties.title;
+        } catch (error) {
+            console.log('Using default sheet name: Sheet1');
+        }
+
         await sheets.spreadsheets.values.append({
             spreadsheetId,
-            range: 'Sheet1!A:Q', // Adjust sheet name if needed
+            range: `${sheetName}!A:Q`,
             valueInputOption: 'RAW',
             insertDataOption: 'INSERT_ROWS',
             resource: {
@@ -306,10 +290,10 @@ module.exports = async (req, res) => {
             await transporter.sendMail(mailOptions);
         }
 
-        // Upload image to Google Drive (if present)
+        // Upload image to Cloudinary (if present)
         let imageUrl = null;
         if (data.pariImage) {
-            imageUrl = await uploadToGoogleDrive(data.pariImage, data.pariImage.name, sanitizedData.email);
+            imageUrl = await uploadToCloudinary(data.pariImage, data.pariImage.name, sanitizedData.email);
         }
 
         // Store in Google Sheets with image URL
