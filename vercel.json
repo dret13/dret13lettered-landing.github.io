@@ -1,41 +1,45 @@
 {
-  "version": 2,
-  "name": "lettered-landing-page",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/.well-known/apple-app-site-association",
-      "dest": "/.well-known/apple-app-site-association",
-      "headers": {
-        "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=3600"
-      }
+      "source": "/profile/:id",
+      "destination": "/index.html"
     },
     {
-      "src": "/.well-known/assetlinks.json",
-      "dest": "/.well-known/assetlinks.json",
-      "headers": {
-        "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=3600"
-      }
+      "source": "/post/:id",
+      "destination": "/index.html"
     },
     {
-      "src": "/profile/(.*)",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/post/(.*)",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/stream/(.*)",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/stream/:id",
+      "destination": "/index.html"
     }
   ],
   "headers": [
+    {
+      "source": "/.well-known/apple-app-site-association",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/assetlinks.json",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
@@ -55,4 +59,5 @@
     }
   ]
 }
+
 
