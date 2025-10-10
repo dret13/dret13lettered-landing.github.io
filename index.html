@@ -975,7 +975,7 @@
                     </div>
                     </nav>
                     <br>
-                    <p style="font-style: italic; align-items="center">Welcome to the ultimate private network for the Divine 9—a home where culture, legacy, and influence intersect. Part digital yard, part archive, part social network, Lettered is a space members can gather, connect, and create together. Represent your chapter, organize events, share memories, and flex your culture in this trusted community built just for you. Here, every story, every post, and every interaction amplifies your voice while strengthening the bonds that unite us all.</p>
+                    <p style="font-style: italic; text-align: center;">Welcome to the ultimate private network for the Divine 9—a home where culture, legacy, and influence intersect. Part digital yard, part archive, part social network, Lettered is a space members can gather, connect, and create together. Represent your chapter, organize events, share memories, and flex your culture in this trusted community built just for you. Here, every story, every post, and every interaction amplifies your voice while strengthening the bonds that unite us all.</p>
                     <br>
                     <div style="margin-top: 12%;">
                     <h3><strong>Lettered</strong></h3>
@@ -1206,6 +1206,9 @@
                         showSlides();
                     });
                 }
+                
+                // Load the about section by default
+                showSection('about');
             });
 
             // Deep Link Detection and Handling
@@ -1381,15 +1384,15 @@
                                 <button onclick="showSection('access')">Access</button>
                                 <button onclick="showSection('faq')">FAQs</button>
                             </div>
-                        </div>
-                        </nav>
-                    <div onload="showSection('about')" style="justify-content:center; align-items: center;">
-                        <!-- <img src="images/welcomelogo.png" style="max-width: 65%;"> -->
-                        <!-- <h1>Welcome to Lettered</h1>
-                        <p>Trusted space for the divine nine</p> -->
-                       
-                        <!-- <button onclick="showSection('about')">Welcome</button> -->
                     </div>
+                    </nav>
+                <div style="justify-content:center; align-items: center;">
+                    <!-- <img src="images/welcomelogo.png" style="max-width: 65%;"> -->
+                    <!-- <h1>Welcome to Lettered</h1>
+                    <p>Trusted space for the divine nine</p> -->
+                   
+                    <!-- <button onclick="showSection('about')">Welcome</button> -->
+                </div>
                 </main>
             </div>
 
