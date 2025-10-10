@@ -891,6 +891,148 @@
                     });
                 }
             });
+
+            // Deep Link Detection and Handling
+    (function() {
+        // Check if this is a deep link URL
+        const path = window.location.pathname;
+        const pathParts = path.split('/').filter(Boolean);
+        
+        // Define deep link patterns
+        const deepLinkPatterns = {
+            profile: /^profile\/(.+)$/,
+            post: /^post\/(.+)$/,
+            stream: /^stream\/(.+)$/
+        };
+        
+        // Check if URL matches any deep link pattern
+        let isDeepLink = false;
+        let deepLinkType = null;
+        let deepLinkId = null;
+        
+        if (pathParts.length >= 2) {
+            const potentialType = pathParts[0];
+            const potentialId = pathParts[1];
+            
+            if (['profile', 'post', 'stream'].includes(potentialType)) {
+                isDeepLink = true;
+                deepLinkType = potentialType;
+                deepLinkId = potentialId;
+            }
+        }
+        
+        // If this is a deep link, try to open the app
+        if (isDeepLink) {
+            console.log('Deep link detected:', deepLinkType, deepLinkId);
+            
+            // Try to open app with custom scheme
+            const customSchemeUrl = `lettered://${deepLinkType}/${deepLinkId}`;
+            window.location = customSchemeUrl;
+            
+            // Show a modal after attempting to open app
+            setTimeout(function() {
+                showDeepLinkModal(deepLinkType, deepLinkId);
+            }, 1000);
+        }
+        
+        // Function to show deep link modal
+        function showDeepLinkModal(type, id) {
+            // Create modal HTML
+            const modalHTML = `
+                <div id="deep-link-modal" style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0,0,0,0.8);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10000;
+                    padding: 20px;
+                ">
+                    <div style="
+                        background: white;
+                        border-radius: 20px;
+                        padding: 40px;
+                        max-width: 500px;
+                        text-align: center;
+                        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                    ">
+                        <div style="
+                            width: 80px;
+                            height: 80px;
+                            margin: 0 auto 20px;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            border-radius: 20px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: white;
+                            font-size: 36px;
+                            font-weight: bold;
+                        ">L</div>
+                        <h2 style="margin-bottom: 10px; color: #333;">Open in Lettered App?</h2>
+                        <p style="color: #666; margin-bottom: 30px;">
+                            View this ${type} in the Lettered app for the best experience.
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <button onclick="window.location='${customSchemeUrl}'" style="
+                                padding: 15px 30px;
+                                border-radius: 10px;
+                                border: none;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                color: white;
+                                font-weight: 600;
+                                cursor: pointer;
+                                font-size: 16px;
+                            ">Open in App</button>
+                            <button onclick="document.getElementById('deep-link-modal').remove()" style="
+                                padding: 15px 30px;
+                                border-radius: 10px;
+                                border: none;
+                                background: #f5f5f5;
+                                color: #333;
+                                font-weight: 600;
+                                cursor: pointer;
+                                font-size: 16px;
+                            ">Continue on Web</button>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <p style="color: #999; font-size: 14px; margin-bottom: 10px;">Don't have the app?</p>
+                            <div style="display: flex; gap: 10px; justify-content: center;">
+                                <a href="https://apps.apple.com/app/lettered/id123456789" style="text-decoration: none;">
+                                    <button style="
+                                        padding: 10px 20px;
+                                        border-radius: 8px;
+                                        border: 1px solid #ddd;
+                                        background: white;
+                                        cursor: pointer;
+                                        font-size: 14px;
+                                    ">iOS App</button>
+                                </a>
+                                <a href="https://play.google.com/store/apps/details?id=com.lettered.app" style="text-decoration: none;">
+                                    <button style="
+                                        padding: 10px 20px;
+                                        border-radius: 8px;
+                                        border: 1px solid #ddd;
+                                        background: white;
+                                        cursor: pointer;
+                                        font-size: 14px;
+                                    ">Android App</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add modal to page
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+    })();
+    
        </script>
     </head>
 
