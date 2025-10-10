@@ -132,15 +132,8 @@ async function writeToGoogleSheets(data, imageUrl) {
             data.userAgent
         ];
 
-        // Append row to sheet
-        // Try to get sheet metadata first to find the correct sheet name
-        let sheetName = 'Sheet1';
-        try {
-            const metadata = await sheets.spreadsheets.get({ spreadsheetId });
-            sheetName = metadata.data.sheets[0].properties.title;
-        } catch (error) {
-            console.log('Using default sheet name: Sheet1');
-        }
+        // Get sheet name from environment variable or use default
+        const sheetName = process.env.GOOGLE_SHEET_NAME || 'Submissions';
 
         await sheets.spreadsheets.values.append({
             spreadsheetId,
