@@ -24,8 +24,12 @@ Every form submission will automatically create a new row in your Google Sheet w
 4. Add these column headers in Row 1:
 
 ```
-Timestamp | First Name | Last Name | Email | Organization | Chapter Name | City | University | Line Name | Line Number | Instagram | TikTok | Facebook | Twitter | Has Image | IP Address | User Agent
+Timestamp | First Name | Last Name | Email | Organization | Chapter Name | City | University | Line Name | Line Number | Instagram | TikTok | Facebook | Twitter | Pari Image Link | IP Address | User Agent
 ```
+
+**Note**: Column O ("Pari Image Link") will contain:
+- A clickable Google Drive link if image was uploaded
+- "No Image" if no image was uploaded
 
 5. Copy the **Sheet ID** from the URL:
    ```
@@ -165,7 +169,7 @@ Each submission creates a new row with these columns:
 | TikTok | TikTok URL | "https://tiktok.com/..." |
 | Facebook | Facebook URL | "https://facebook.com/..." |
 | Twitter | Twitter URL | "https://twitter.com/..." |
-| Has Image | Whether they uploaded pari image | "Yes" or "No" |
+| Pari Image Link | Google Drive link to uploaded image | "https://drive.google.com/..." or "No Image" |
 | IP Address | Submission IP | "192.168.1.1" |
 | User Agent | Browser info | "Mozilla/5.0..." |
 

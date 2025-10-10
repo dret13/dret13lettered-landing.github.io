@@ -50,8 +50,73 @@ function sanitizeInput(input) {
         .replace(/\//g, '&#x2F;');
 }
 
+// Upload image to Google Drive
+async function uploadToGoogleDrive(imageData, fileName, email) {
+    try {
+        if (!process.env.GOOGLE_SHEETS_CREDENTIALS || !process.env.GOOGLE_DRIVE_FOLDER_ID) {
+            console.log('Google Drive not configured, skipping image upload...');
+            return null;
+        }
+
+        const credentials = JSON.parse(process.env.GOOGLE_SHEETS_CREDENTIALS);
+        
+        // Create auth client with Drive scope
+        const auth = new google.auth.GoogleAuth({
+            credentials: credentials,
+            scopes: [
+                'https://www.googleapis.com/auth/spreadsheets',
+                'https://www.googleapis.com/auth/drive.file'
+            ],
+        });
+
+        const drive = google.drive({ version: 'v3', auth });
+
+        // Convert base64 to buffer
+        const base64Data = imageData.data.split(',')[1];
+        const buffer = Buffer.from(base64Data, 'base64');
+
+        // Create unique filename
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const sanitizedEmail = email.replace(/[^a-zA-Z0-9]/g, '_');
+        const uniqueFileName = `${timestamp}_${sanitizedEmail}_${fileName}`;
+
+        // Upload file to Drive
+        const fileMetadata = {
+            name: uniqueFileName,
+            parents: [process.env.GOOGLE_DRIVE_FOLDER_ID]
+        };
+
+        const media = {
+            mimeType: imageData.type,
+            body: require('stream').Readable.from(buffer)
+        };
+
+        const file = await drive.files.create({
+            requestBody: fileMetadata,
+            media: media,
+            fields: 'id, webViewLink, webContentLink'
+        });
+
+        // Make file accessible via link
+        await drive.permissions.create({
+            fileId: file.data.id,
+            requestBody: {
+                role: 'reader',
+                type: 'anyone'
+            }
+        });
+
+        console.log('Image uploaded to Google Drive:', file.data.webViewLink);
+        return file.data.webViewLink;
+
+    } catch (error) {
+        console.error('Error uploading to Google Drive:', error);
+        return null;
+    }
+}
+
 // Write data to Google Sheets
-async function writeToGoogleSheets(data) {
+async function writeToGoogleSheets(data, imageUrl) {
     try {
         // Check if Google Sheets is configured
         if (!process.env.GOOGLE_SHEETS_CREDENTIALS || !process.env.GOOGLE_SHEET_ID) {
@@ -87,7 +152,7 @@ async function writeToGoogleSheets(data) {
             data.socialMedia.tiktok || '',
             data.socialMedia.facebook || '',
             data.socialMedia.twitter || '',
-            data.pariImage ? 'Yes' : 'No',
+            imageUrl || 'No Image', // Google Drive link or "No Image"
             data.submittedFrom,
             data.userAgent
         ];
@@ -241,8 +306,14 @@ module.exports = async (req, res) => {
             await transporter.sendMail(mailOptions);
         }
 
-        // Store in Google Sheets
-        await writeToGoogleSheets(sanitizedData);
+        // Upload image to Google Drive (if present)
+        let imageUrl = null;
+        if (data.pariImage) {
+            imageUrl = await uploadToGoogleDrive(data.pariImage, data.pariImage.name, sanitizedData.email);
+        }
+
+        // Store in Google Sheets with image URL
+        await writeToGoogleSheets(sanitizedData, imageUrl);
 
         // Log submission (for debugging - remove in production)
         console.log('Verification submitted:', {
