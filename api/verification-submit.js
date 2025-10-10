@@ -264,11 +264,12 @@ module.exports = async (req, res) => {
             ${data.pariImage ? '<p><strong>Note:</strong> Pari image attached</p>' : ''}
         `;
 
-        // Send email notification
+        // Send email notifications
         if (process.env.SMTP_USER && process.env.SMTP_PASS) {
             const transporter = createTransporter();
             
-            const mailOptions = {
+            // 1. Send notification to admin
+            const adminMailOptions = {
                 from: process.env.SMTP_USER,
                 to: process.env.NOTIFICATION_EMAIL || process.env.SMTP_USER,
                 subject: `New Verification Request - ${sanitizedData.fname} ${sanitizedData.lname}`,
@@ -280,7 +281,104 @@ module.exports = async (req, res) => {
                 }] : []
             };
 
-            await transporter.sendMail(mailOptions);
+            await transporter.sendMail(adminMailOptions);
+
+            // 2. Send confirmation to applicant
+            const orgNames = {
+                'alpha': 'Alpha Phi Alpha Fraternity, Inc.',
+                'aka': 'Alpha Kappa Alpha Sorority, Inc.',
+                'kappa': 'Kappa Alpha Psi Fraternity, Inc.',
+                'que': 'Omega Psi Phi Fraternity, Inc.',
+                'delta': 'Delta Sigma Theta Sorority, Inc.',
+                'sigma': 'Phi Beta Sigma Fraternity, Inc.',
+                'sgrho': 'Sigma Gamma Rho Sorority, Inc.',
+                'zeta': 'Zeta Phi Beta Sorority, Inc.',
+                'iota': 'Iota Phi Theta Fraternity, Inc.'
+            };
+
+            const userEmailHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #22182B; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: rgb(34,49,29); color: #F0E7DA; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .content { background: #ffffff; padding: 30px; border: 1px solid #ddd; }
+        .footer { background: rgb(34,49,29); color: #F0E7DA; padding: 20px; text-align: center; border-radius: 0 0 8px 8px; font-size: 14px; }
+        .highlight { background: #D4EDDA; padding: 15px; border-left: 4px solid rgb(151, 0, 0); margin: 20px 0; }
+        .info-row { margin: 10px 0; }
+        .label { font-weight: bold; color: rgb(34,49,29); }
+        h1 { margin: 0; font-size: 28px; text-transform: uppercase; }
+        h2 { color: rgb(34,49,29); border-bottom: 2px solid rgb(151, 0, 0); padding-bottom: 10px; }
+        .button { display: inline-block; background: rgb(151, 0, 0); color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 15px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✓ Verification Received</h1>
+            <p style="margin: 10px 0 0 0; font-size: 16px;">Lettered - The Digital Yard</p>
+        </div>
+        
+        <div class="content">
+            <h2>Welcome, ${sanitizedData.fname}!</h2>
+            
+            <p>Thank you for submitting your verification request for <strong>Lettered</strong> - the trusted digital space for the Divine Nine.</p>
+            
+            <div class="highlight">
+                <p style="margin: 0; font-size: 16px;"><strong>⏱️ What Happens Next?</strong></p>
+                <p style="margin: 10px 0 0 0;">Your verification request is being reviewed. You will receive an email within <strong>24-72 hours</strong> with your verification status and next steps to access the app.</p>
+            </div>
+            
+            <h2>📋 Your Submission Summary</h2>
+            
+            <div class="info-row">
+                <span class="label">Name:</span> ${sanitizedData.fname} ${sanitizedData.lname}
+            </div>
+            <div class="info-row">
+                <span class="label">Email:</span> ${sanitizedData.email}
+            </div>
+            <div class="info-row">
+                <span class="label">Organization:</span> ${orgNames[sanitizedData.organization] || sanitizedData.organization}
+            </div>
+            <div class="info-row">
+                <span class="label">Chapter:</span> ${sanitizedData.chapterName}
+            </div>
+            <div class="info-row">
+                <span class="label">Line Name:</span> ${sanitizedData.lineName}
+            </div>
+            <div class="info-row">
+                <span class="label">Line Number:</span> #${sanitizedData.lineNumber}
+            </div>
+            <div class="info-row">
+                <span class="label">Submitted:</span> ${new Date(sanitizedData.timestamp).toLocaleString()}
+            </div>
+            
+            <p style="margin-top: 30px; font-size: 14px; color: #666;">
+                <strong>Note:</strong> Keep this email for your records. If you have any questions about your verification status, you can reply to this email.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p style="margin: 0 0 10px 0;"><strong>Lettered App</strong></p>
+            <p style="margin: 0; font-size: 12px;">Part digital yard, part legacy archive, part private network.</p>
+            <p style="margin: 15px 0 0 0; font-size: 12px;">© 2025 Lettered. All Rights Reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
+            `;
+
+            const userMailOptions = {
+                from: process.env.SMTP_USER,
+                to: sanitizedData.email,
+                subject: '✓ Verification Received - Lettered App',
+                html: userEmailHtml
+            };
+
+            await transporter.sendMail(userMailOptions);
+            console.log('Confirmation email sent to user:', sanitizedData.email);
         }
 
         // Upload image to Cloudinary (if present)
